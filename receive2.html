@@ -13,6 +13,40 @@
       color: #ffffff;
     }
 
+    /* Pull-to-refresh loader */
+    .loader-container {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      height: 56px;
+      background-color: #0f0f0f;
+      position: sticky;
+      top: 0;
+      z-index: 999;
+    }
+
+   .loader span {
+  font-size: 16px; /* Smaller size */
+  font-weight: bold;
+  color: #fff;
+  display: inline-block;
+  animation: bounce 1s infinite ease-in-out;
+}
+
+    .loader .b1 { animation-delay: 0s; }
+    .loader .y  { animation-delay: 0.1s; }
+    .loader .b2 { animation-delay: 0.2s; }
+    .loader .i  {
+      animation-delay: 0.3s;
+      color: #f5a623;
+    }
+    .loader .t  { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
     header {
       display: flex;
       align-items: center;
@@ -33,28 +67,28 @@
       justify-content: space-between;
       padding: 0 10px;
       margin-top: 10px;
-      font-size: 14px;
+      font-size: 13px;
     }
 
     .tabs span {
-      padding: 6px 10px;
+      padding: 6px 9px;
       color: #888;
     }
 
     .tabs .active {
       color: #fff;
-      border-bottom: 2px solid orange;
+      border-bottom: 1px solid orange;
     }
 
     .sub-tabs {
       padding: 0 15px;
       margin-top: 5px;
-      font-size: 13px;
+      font-size: 12px;
       color: #aaa;
     }
 
     .transaction-list {
-      padding: 10px 15px;
+      padding: 9px 13px;
     }
 
     .transaction {
@@ -62,7 +96,7 @@
       text-decoration: none;
       color: #fff;
       border-bottom: 1px solid #1e1e1e;
-      padding: 12px 0;
+      padding: 11px 0;
       transition: background-color 0.2s;
     }
 
@@ -98,15 +132,15 @@
 </head>
 <body>
 
+
+
   <header>
     <i class="fas fa-arrow-left back-arrow"></i>
     <table width="100%" height="100%">
-  <tr>
-    <td align="center" valign="middle">
-      Asset History
-    </td>
-  </tr>
-</table>
+      <tr>
+        <td align="center" valign="middle">Asset History</td>
+      </tr>
+    </table>
   </header>
 
   <div class="tabs">
@@ -119,32 +153,29 @@
   </div>
 
   <div class="sub-tabs">All Assets ▾  &nbsp;&nbsp;&nbsp; On-Chain Withdrawal ▾</div>
+        <!-- Pull to refresh loader -->
+ <div id="pull-loader" class="loader-container">
+    <div class="loader">
+      <span class="b1">B</span>
+      <span class="y">Y</span>
+      <span class="b2">B</span>
+      <span class="i">I</span>
+      <span class="t">T</span>
+    </div>
+  </div>
 
   <div class="transaction-list">
-      
-  <a href="#" class="transaction">
-      <div class="top">
-        <span>TON</span>
-        <span class="amount">0.8614319</span>
-      </div>
-      <div class="bottom">
-        <span>2025-01-08 23:04:52</span>
-        <span class="status">● Withdrawal Completed</span>
-      </div>
+    <a href="#" class="transaction">
+      <div class="top"><span>TON</span><span class="amount">0.8614319</span></div>
+      <div class="bottom"><span>2025-01-08 23:04:52</span><span class="status">● Withdrawal Completed</span></div>
     </a>
 
     <a href="#" class="transaction">
-      <div class="top">
-        <span>BTC</span>
-        <span class="amount">0.00089873</span>
-      </div>
-      <div class="bottom">
-        <span>2025-01-08 18:54:35</span>
-        <span class="status">● Withdrawal Completed</span>
-      </div>
+      <div class="top"><span>BTC</span><span class="amount">0.00089873</span></div>
+      <div class="bottom"><span>2025-01-08 18:54:35</span><span class="status">● Withdrawal Completed</span></div>
     </a>
 
-    <a href="mtf2.html" class="transaction">
+      <a href="mtf2.html" class="transaction">
       <div class="top">
         <span>TON</span>
         <span class="amount">1,286.76</span>
@@ -242,7 +273,34 @@
         <span class="status">● Withdrawal Completed</span>
       </div>
     </a>
-
   </div>
+
+  <script>
+    let startY = 0;
+    let isPulling = false;
+
+    window.addEventListener('touchstart', function (e) {
+      if (window.scrollY === 0) {
+        startY = e.touches[0].clientY;
+        isPulling = true;
+      }
+    });
+
+    window.addEventListener('touchmove', function (e) {
+      const currentY = e.touches[0].clientY;
+      if (isPulling && currentY - startY > 80) {
+        showLoader();
+        isPulling = false;
+      }
+    });
+
+    function showLoader() {
+      const loader = document.getElementById('pull-loader');
+      loader.style.display = 'flex';
+      setTimeout(() => {
+        loader.style.display = 'none';
+      }, 2000);
+    }
+  </script>
 </body>
-</html>
+        </html>
