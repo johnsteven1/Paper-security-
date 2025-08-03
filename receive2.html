@@ -120,9 +120,14 @@
     }
 
     .status {
-      color: #3fcf8e;
-      font-size: 12px;
-    }
+  color: #f0f0f0;  /* white text */
+  font-size: 11px;
+}
+
+.status::before {
+  content: '● ';
+  color: #32cd32; /* green dot */
+}
 
     .amount {
       font-weight: bold;
@@ -167,33 +172,33 @@
   <div class="transaction-list">
     <a href="#" class="transaction">
       <div class="top"><span>TON</span><span class="amount">0.8614319</span></div>
-      <div class="bottom"><span>2025-01-08 23:04:52</span><span class="status">● Withdrawal Completed</span></div>
+      <div class="bottom"><span>2025-01-08 23:08:52</span><span class="status"> Withdrawal Completed</span></div>
     </a>
 
     <a href="#" class="transaction">
       <div class="top"><span>BTC</span><span class="amount">0.00089873</span></div>
-      <div class="bottom"><span>2025-01-08 18:54:35</span><span class="status">● Withdrawal Completed</span></div>
+      <div class="bottom"><span>2025-01-08 18:54:35</span><span class="status">Withdrawal Completed</span></div>
     </a>
 
-      <a href="mtf2.html" class="transaction">
+      <a href="#" class="transaction">
       <div class="top">
         <span>TON</span>
         <span class="amount">1,286.76</span>
       </div>
       <div class="bottom">
         <span>2025-01-08 16:55:58</span>
-        <span class="status">● Withdrawal Completed</span>
+        <span class="status">Withdrawal Completed</span>
       </div>
     </a>
         
-    <a href="#" class="transaction">
+    <a href="mtf2.html" class="transaction">
       <div class="top">
-        <span>USDT</span>
-        <span class="amount">51</span>
+        <span>TON</span>
+        <span class="amount">5,200.00</span>
       </div>
       <div class="bottom">
-        <span>2025-02-20 17:36:38</span>
-        <span class="status">● Withdrawal Completed</span>
+        <span>2025-18-07 04:35:18</span>
+        <span class="status">Withdrawal Completed</span>
       </div>
     </a>
 
@@ -204,7 +209,7 @@
       </div>
       <div class="bottom">
         <span>2024-11-17 15:31:18</span>
-        <span class="status">● Withdrawal Completed</span>
+        <span class="status">Withdrawal Completed</span>
       </div>
     </a>
 
@@ -215,7 +220,7 @@
       </div>
       <div class="bottom">
         <span>2024-09-19 11:35:20</span>
-        <span class="status">● Withdrawal Completed</span>
+        <span class="status">Withdrawal Completed</span>
       </div>
     </a>
 
@@ -226,7 +231,7 @@
       </div>
       <div class="bottom">
         <span>2024-09-18 14:59:36</span>
-        <span class="status">● Withdrawal Completed</span>
+        <span class="status">Withdrawal Completed</span>
       </div>
     </a>
 
@@ -237,7 +242,7 @@
       </div>
       <div class="bottom">
         <span>2024-09-16 21:57:59</span>
-        <span class="status">● Withdrawal Completed</span>
+        <span class="status">Withdrawal Completed</span>
       </div>
     </a>
 
@@ -248,7 +253,7 @@
       </div>
       <div class="bottom">
         <span>2024-08-11 19:08:55</span>
-        <span class="status">● Withdrawal Completed</span>
+        <span class="status">Withdrawal Completed</span>
       </div>
     </a>
 
@@ -259,7 +264,7 @@
       </div>
       <div class="bottom">
         <span>2024-07-10 01:46:22</span>
-        <span class="status">● Withdrawal Completed</span>
+        <span class="status">Withdrawal Completed</span>
       </div>
     </a>
 
@@ -270,7 +275,7 @@
       </div>
       <div class="bottom">
         <span>2024-07-03 02:06:13</span>
-        <span class="status">● Withdrawal Completed</span>
+        <span class="status">Withdrawal Completed</span>
       </div>
     </a>
   </div>
@@ -303,4 +308,5 @@
     }
   </script>
 </body>
-        </html>
+  </html>
+  
