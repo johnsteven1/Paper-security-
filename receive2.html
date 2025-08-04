@@ -34,7 +34,7 @@
 }
 
     .loader .b1 { animation-delay: 0s; }
-    .loader .y  { animation-delay: 0.1s; }
+    .loader .y  { animation-delay: 0.2s; }
     .loader .b2 { animation-delay: 0.2s; }
     .loader .i  {
       animation-delay: 0.3s;
@@ -67,7 +67,8 @@
       justify-content: space-between;
       padding: 0 10px;
       margin-top: 10px;
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: bold;
     }
 
     .tabs span {
@@ -96,7 +97,7 @@
       text-decoration: none;
       color: #fff;
       border-bottom: 1px solid #1e1e1e;
-      padding: 11px 0;
+      padding: 10px 0;
       transition: background-color 0.2s;
     }
 
@@ -107,31 +108,33 @@
     .transaction .top {
       display: flex;
       justify-content: space-between;
-      font-weight: 600;
-      font-size: 15px;
+      font-weight: 500;
+      font-size: 13px;
+      color: #fff;
     }
 
     .transaction .bottom {
       display: flex;
       justify-content: space-between;
       margin-top: 5px;
-      font-size: 12px;
+      font-size: 10px;
       color: #aaa;
     }
 
     .status {
-  color: #f0f0f0;  /* white text */
+  color:#aaa;  /* white text */
   font-size: 11px;
 }
 
 .status::before {
   content: '● ';
-  color: #32cd32; /* green dot */
+  color: #228B22; /* green dot */
 }
 
     .amount {
-      font-weight: bold;
-      font-size: 15px;
+      font-weight: ;
+      font-size: 12px;
+      color: #fff;
     }
   </style>
 </head>
@@ -154,7 +157,6 @@
     <span class="active">Withdraw</span>
     <span>Transfer</span>
     <span>P2P</span>
-    <span>Fiat Deposit</span>
   </div>
 
   <div class="sub-tabs">All Assets ▾  &nbsp;&nbsp;&nbsp; On-Chain Withdrawal ▾</div>
@@ -278,7 +280,18 @@
         <span class="status">Withdrawal Completed</span>
       </div>
     </a>
-  </div>
+  
+      
+  <a href="#" class="transaction">
+      <div class="top">
+        <span>USDT</span>
+        <span class="amount">300.00</span>
+      </div>
+      <div class="bottom">
+        <span>2024-09-18 14:59:36</span>
+        <span class="status">Withdrawal Completed</span>
+      </div>
+    </a>
 
   <script>
     let startY = 0;
@@ -308,5 +321,4 @@
     }
   </script>
 </body>
-  </html>
-  
+</html>
