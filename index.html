@@ -1,46 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Image with Link Dot</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UI Clone with Background</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body, html {
       margin: 0;
       padding: 0;
       height: 100%;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      overflow: hidden; /* Prevent scroll */
     }
 
-.background-container {
-  position: relative;
-  width: 100%;
-  height: 100vh; /* This defines the height of the container itself */
-  background-image: url('PhotoGrid_Site_1754080171922.png');
-  background-size: 100% 100%; /* Increase background image height */
-  background-repeat: no-repeat;
-  background-position: center;
-}
+    /* Fixed Top Bar */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 15px;
+      background-color: rgba(17, 17, 17, 0.9);
+      color: #fff;
+      z-index: 1000;
+    }
 
-    .link-dot {
-      position: absolute;
-      top: 3%;  /* Change this to position the dot */
-      left: 97%; /* Change this to position the dot */
-      transform: translate(-50%, -50%);
-      width: 12px;
-      height: 12px;
-      background-color: red;
+    .user-icon {
+      width: 28px;
+      height: 28px;
+      background-color: #cce5f4;
       border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      gap: 1px;
+    }
+
+    .tab {
+      padding: 5px 9px;
+      background-color: #222;
+      color: #aaa;
+      border: none;
+      outline: none;
       cursor: pointer;
-      z-index: 10;
-      border: 2px solid red;
-      box-shadow: 0 0 5px rgba(0,0,0,0.5);
+      font-size: 12px;
+    }
+
+    .tab.active {
+      background-color: #444;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 4px 0 0 4px;
+    }
+
+    .tab + .tab {
+      border-radius: 0 4px 4px 0;
+    }
+
+    .icons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 14px;
+    }
+
+    .notification {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background-color: red;
+      color: white;
+      font-size: 8px;
+      padding: 1px 5px;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+
+    /* Loader */
+    .loader-container {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      height: 37px;
+      background-color: #0f0f0f;
+      position: fixed;
+      top: 38px;
+      width: 100%;
+      z-index: 999;
+    }
+
+    .loader span {
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      display: inline-block;
+      animation: bounce 1s infinite ease-in-out;
+    }
+
+    .loader .b1 { animation-delay: 0s; }
+    .loader .y  { animation-delay: 0.1s; }
+    .loader .b2 { animation-delay: 0.2s; }
+    .loader .i  {
+      animation-delay: 0.3s;
+      color: #f5a623;
+    }
+    .loader .t  { animation-delay: 0.4s; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    .background-container {
+      position: relative;
+      width: 100%;
+      height: 98vh;
+      background-image: url('PhotoGrid_Site_1754422473795.png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      overflow: hidden;
+      padding-top: 26px;
     }
   </style>
 </head>
 <body>
-  <div class="background-container">
-    <a href="mtf.html" target="_blank">
-      <div class="link-dot" title="Go to link"></div>
-    </a>
+
+  <!-- Fixed Top Bar -->
+  <div class="top-bar">
+    <div class="user-icon">
+      <i class="fas fa-user"></i>
+    </div>
+
+    <div class="tab-buttons">
+      <button class="tab active">Exchange</button>
+      <button class="tab">WEB3</button>
+    </div>
+
+    <div class="icons">
+      <i class="fas fa-headset"></i>
+      <div class="notification" onclick="handleNotificationClick()">
+        <i class="fas fa-bell"></i>
+        <span class="badge">46</span>
+      </div>
+    </div>
   </div>
+
+  <!-- Loader shown on pull -->
+  <div id="pull-loader" class="loader-container">
+    <div class="loader">
+      <span class="b1">B</span>
+      <span class="y">Y</span>
+      <span class="b2">B</span>
+      <span class="i">I</span>
+      <span class="t">T</span>
+    </div>
+  </div>
+
+  <!-- Background -->
+  <div class="background-container" id="scrollable-container">
+    <!-- Add static content here if needed -->
+  </div>
+
+  <script>
+    function handleNotificationClick() {
+      window.location.href = "mtf.html";
+    }
+
+    const loader = document.getElementById("pull-loader");
+    let startY = 0;
+    let isPulling = false;
+
+    document.addEventListener("touchstart", (e) => {
+      if (window.scrollY === 0) {
+        startY = e.touches[0].clientY;
+        isPulling = true;
+      }
+    });
+
+    document.addEventListener("touchmove", (e) => {
+      if (!isPulling) return;
+      const currentY = e.touches[0].clientY;
+      const distance = currentY - startY;
+
+      if (distance > 50) {
+        loader.style.display = "flex";
+      }
+    });
+
+    document.addEventListener("touchend", () => {
+      if (!isPulling) return;
+      isPulling = false;
+
+      setTimeout(() => {
+        loader.style.display = "none";
+        // location.reload(); // Optional refresh
+      }, 1500);
+    });
+  </script>
 </body>
 </html>
