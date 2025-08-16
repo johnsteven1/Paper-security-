@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UI Clone with Background</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      overflow: hidden; /* Prevent scroll */
+    }
+
+    /* Fixed Top Bar */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 15px;
+      background-color: #111212;
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      color: #fff;
+      z-index: 1000;
+    }
+
+    .user-icon {
+      width: 28px;
+      height: 28px;
+      background-color: rgba(204, 229, 244, 0.88);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .tab-buttons {
+      display: flex;
+      gap: 1px;
+    }
+
+    .tab {
+      padding: 5px 9px;
+      background-color: #222;
+      color: #aaa;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .tab.active {
+      background-color: #444;
+      color: #fff;
+      font-weight: bold;
+      border-radius: 4px 0 0 4px;
+    }
+
+    .tab + .tab {
+      border-radius: 0 4px 4px 0;
+    }
+
+    .icons {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      font-size: 14px;
+    }
+
+    .notification {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background-color: red;
+      color: white;
+      font-size: 8px;
+      padding: 1px 5px;
+      border-radius: 50%;
+      font-weight: bold;
+    }
+
+    /* Loader */
+    .loader-container {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      height: 39px;
+      background-color: #0f0f0f;
+      position: fixed;
+      top: 48px;
+      width: 100%;
+      z-index: 999;
+    }
+
+    .loader span {
+      font-size: 16px;
+      font-weight: bold;
+      color: #fff;
+      display: inline-block;
+      animation: bounce 1s infinite ease-in-out;
+    }
+
+    .loader .b1 { animation-delay: 0s; }
+    .loader .y  { animation-delay: 0.2s; }
+    .loader .b2 { animation-delay: 0.2s; }
+    .loader .i  {
+      animation-delay: 0.4s;
+      color: #f5a623;
+    }
+    .loader .t  { animation-delay: 0.8s; }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    .background-container {
+      position: relative;
+      width: 100%;
+      height: 98vh;
+      background-image: url('PhotoGrid_Site_1754422473795 (1).png');
+      background-size: 100% 100%;
+      background-repeat: no-repeat;
+      background-position: center;
+      overflow: hidden;
+      padding-top: 26px;
+    }
+
+    /* --- Crypto Box --- */
+    .crypto-box {
+      position: absolute;
+      top: 58%;   
+      left: -7%;
+      background: rgba(11,12,16,0.9);
+      width: 100%;
+      height: 25%;
+      cursor: move;
+      padding: 30px;
+      border-radius: 8px;
+    }
+
+    h2 {
+      color: #ffcc00;
+      margin-bottom: 12px;
+      font-size: 16px;
+    }
+
+    .crypto-table {
+      width: 113%;
+      height: 50%;
+      border-collapse: collapse;
+    }
+
+    .crypto-table th,
+    .crypto-table td {
+      padding: 10px 8px;
+    }
+
+    .crypto-table th {
+      text-align: left;
+      color: #aaa;
+      font-weight: normal;
+      font-size: 13px;
+    }
+
+    .crypto-table td {
+      font-size: 13px;
+      vertical-align: middle;
+    }
+
+    .crypto-table td small {
+      display: block;
+      font-size: 11px;
+      color: #888;
+      margin-top: 2px;
+    }
+
+.price {
+  font-weight: bold;
+  text-align: center;
+  font-size: 13px;
+  transition: color 0.2s ease;
+  transform: translateX(23px); /* moves it left */
+  color: #fff; /* ✅ always white by default */
+}
+
+    .change {
+      text-align: right;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: bold;
+      color: #fff;
+      display: inline-block;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .red {
+      background-color: #e74c3c;
+    }
+
+    .green {
+      background-color: #2ecc71;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fixed Top Bar -->
+  <div class="top-bar">
+    <div class="user-icon">
+      <i class="fas fa-user"></i>
+    </div>
+
+    <div class="tab-buttons">
+      <button class="tab active">Exchange</button>
+      <button class="tab">WEB3</button>
+    </div>
+
+    <div class="icons">
+      <i class="fas fa-headset"></i>
+      <div class="notification" onclick="handleNotificationClick()">
+        <i class="fas fa-bell"></i>
+        <span class="badge">46</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loader shown on pull -->
+  <div id="pull-loader" class="loader-container">
+    <div class="loader">
+      <span class="b1">B</span>
+      <span class="y">Y</span>
+      <span class="b2">B</span>
+      <span class="i">I</span>
+      <span class="t">T</span>
+    </div>
+  </div>
+
+  <!-- Background -->
+  <div class="background-container" id="scrollable-container">
+    <!-- ✅ Crypto Box Added Here -->
+    <div class="crypto-box" id="cryptoBox">
+      <table class="crypto-table">
+        <thead>
+          <tr>
+  <th style="position: relative; left: 0px; top: -10px;">Trading Pairs</th>
+  <th style="position: relative; left: 60px; top: -10px;">Price</th>
+  <th style="position: relative; left: 2px; top: -10px;">24H Change</th>
+</tr>
+        </thead>
+        <tbody id="cryptoData">
+          <tr>
+          <td style="color: white;">MNR / USDT <small>328.37K USDT</small></td>
+            <td class="price">0.003472</td>
+            <td><span class="change red">-36.90%</span></td>
+          </tr>
+          <tr>
+              <td style="color: white;">RPK / USDT <small>201.82K USDT</small></td>
+            <td class="price">0.0006932</td>
+            <td><span class="change red">-28.70%</span></td>
+          </tr>
+          <tr>
+             <td style="color: white;">LUCE / USDT <small>144.12K USDT</small></td>
+            <td class="price">0.003083</td>
+            <td><span class="change red">-19.84%</span></td>
+          </tr>
+          <tr>
+               <td style="color: white;">CTA / USDT <small>656.64K USDT</small></td>
+            <td class="price">0.03320</td>
+            <td><span class="change red">-18.97%</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    function handleNotificationClick() {
+      window.location.href = "mtf.html";
+    }
+
+    const loader = document.getElementById("pull-loader");
+    let startY = 0;
+    let isPulling = false;
+
+    document.addEventListener("touchstart", (e) => {
+      if (window.scrollY === 0) {
+        startY = e.touches[0].clientY;
+        isPulling = true;
+      }
+    });
+
+    document.addEventListener("touchmove", (e) => {
+      if (!isPulling) return;
+      const currentY = e.touches[0].clientY;
+      const distance = currentY - startY;
+
+      if (distance > 50) {
+        loader.style.display = "flex";
+      }
+    });
+
+    document.addEventListener("touchend", () => {
+      if (!isPulling) return;
+      isPulling = false;
+
+      setTimeout(() => {
+        loader.style.display = "none";
+      }, 1700);
+    });
+
+    // --- Price simulation every 4s ---
+    function simulatePriceChange() {
+        const rows = document.querySelectorAll("#cryptoData tr");
+        
+        rows.forEach(row => {
+            const priceCell = row.querySelector(".price");
+            const changeCell = row.querySelector(".change");
+
+            let price = parseFloat(priceCell.textContent);
+            let change = parseFloat(changeCell.textContent);
+
+            const movement = (Math.random() - 0.6) * 0.01; 
+            price += price * movement;
+            change = movement * 100;
+
+            priceCell.textContent = price.toFixed(6);
+            changeCell.textContent = `${change >= 0 ? "+" : ""}${change.toFixed(2)}%`;
+
+            if (change >= 0) {
+                changeCell.classList.remove("red");
+                changeCell.classList.add("green");
+            } else {
+                changeCell.classList.remove("green");
+                changeCell.classList.add("red");
+            }
+
+            setTimeout(() => {
+                priceCell.style.color = "#fff";
+            }, 900);
+        });
+    }
+    setInterval(simulatePriceChange, 8000);
+
+    // --- Make table draggable ---
+    const cryptoBox = document.getElementById("cryptoBox");
+    let isDragging = false, offsetX, offsetY;
+
+    cryptoBox.addEventListener("mousedown", (e) => {
+      isDragging = true;
+      offsetX = e.clientX - cryptoBox.offsetLeft;
+      offsetY = e.clientY - cryptoBox.offsetTop;
+      cryptoBox.style.cursor = "grabbing";
+    });
+
+    document.addEventListener("mousemove", (e) => {
+      if (isDragging) {
+        cryptoBox.style.left = (e.clientX - offsetX) + "px";
+        cryptoBox.style.top = (e.clientY - offsetY) + "px";
+      }
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDragging = false;
+      cryptoBox.style.cursor = "move";
+    });
+  </script>
+</body>
+</html>
+    
