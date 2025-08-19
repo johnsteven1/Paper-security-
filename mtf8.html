@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Image with Link Dot</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+.background-container {
+  position: relative;
+  width: 100%;
+  height: 100vh; /* This defines the height of the container itself */
+  background-image: url('PhotoGrid_Site_1755628934378.png');
+  background-size: 100% 100%; /* Increase background image height */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+    .link-dot {
+      position: absolute;
+      top: 95%;  /* Change this to position the dot */
+      left: 67%; /* Change this to position the dot */
+      transform: translate(-50%, -50%);
+      width: 10px;
+      height: 9px;
+      background-color: white;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+      border: 1px solid white;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+  </style>
+</head>
+<body>
+  <div class="background-container">
+    <a href="https://xrpscan.com/tx/E8F7505FBF59F8187162224FE57FCA894221D7ACD302F7A4C4E5FF398E26321E" target="_blank">
+      <div class="link-dot" title="Go to link"></div>
+    </a>
+  </div>
+</body>
+</html>
+    
