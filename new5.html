@@ -26,7 +26,7 @@
       justify-content: space-between;
       padding: 8px 15px;
       background-color: #111212;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
       color: #fff;
       z-index: 1000;
     }
@@ -83,12 +83,12 @@
 
     .badge {
       position: absolute;
-      top: 6px;
-      right: 10px;
+      top: -6px;
+      right: -8px;
       background-color: red;
       color: white;
-      font-size: 4px;
-      padding: 1px;
+      font-size: 8px;
+      padding: 1px 5px;
       border-radius: 50%;
       font-weight: bold;
     }
@@ -143,9 +143,9 @@
     /* --- Crypto Box --- */
     .crypto-box {
       position: absolute;
-      top: 58%;
+      top: 58%;   
       left: -7%;
-      background: rgba(11, 12, 16, 0.9);
+      background: rgba(11,12,16,0.9);
       width: 100%;
       height: 25%;
       cursor: move;
@@ -189,14 +189,14 @@
       margin-top: 2px;
     }
 
-    .price {
-      font-weight: bold;
-      text-align: center;
-      font-size: 13px;
-      transition: color 0.2s ease;
-      transform: translateX(23px); /* moves it left */
-      color: #fff; /* ✅ always white by default */
-    }
+.price {
+  font-weight: bold;
+  text-align: center;
+  font-size: 13px;
+  transition: color 0.2s ease;
+  transform: translateX(23px); /* moves it left */
+  color: #fff; /* ✅ always white by default */
+}
 
     .change {
       text-align: right;
@@ -220,24 +220,25 @@
   </style>
 </head>
 <body>
+
   <!-- Fixed Top Bar -->
   <div class="top-bar">
     <div class="user-icon">
       <i class="fas fa-user"></i>
     </div>
+
     <div class="tab-buttons">
       <button class="tab active">Exchange</button>
       <button class="tab">WEB3</button>
     </div>
+
     <div class="icons">
       <i class="fas fa-headset"></i>
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-        xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 22a2.5 2.5 0 0 0 2.3-1.5H9.7A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 1 0-14 0v5l-2 2v1h20v-1l-2-2Z"
-          stroke="#e2e3e7" stroke-width="1.5" stroke-linejoin="round"/>
-      </svg>
+      <div class="notification" onclick="handleNotificationClick()">
+        <i class="fas fa-bell"></i>
+        <span class="badge">46</span>
+      </div>
     </div>
-    <span class="badge">46</span>
   </div>
 
   <!-- Loader shown on pull -->
@@ -258,29 +259,29 @@
       <table class="crypto-table">
         <thead>
           <tr>
-            <th style="position: relative; left: 0px; top: -10px;">Trading Pairs</th>
-            <th style="position: relative; left: 60px; top: -10px;">Price</th>
-            <th style="position: relative; left: 2px; top: -10px;">24H Change</th>
-          </tr>
+  <th style="position: relative; left: 0px; top: -10px;">Trading Pairs</th>
+  <th style="position: relative; left: 60px; top: -10px;">Price</th>
+  <th style="position: relative; left: 2px; top: -10px;">24H Change</th>
+</tr>
         </thead>
         <tbody id="cryptoData">
           <tr>
-            <td style="color: white;">MNR / USDT <small>328.37K USDT</small></td>
+          <td style="color: white;">MNR / USDT <small>328.37K USDT</small></td>
             <td class="price">0.003472</td>
             <td><span class="change red">-36.90%</span></td>
           </tr>
           <tr>
-            <td style="color: white;">RPK / USDT <small>201.82K USDT</small></td>
+              <td style="color: white;">RPK / USDT <small>201.82K USDT</small></td>
             <td class="price">0.0006932</td>
             <td><span class="change red">-28.70%</span></td>
           </tr>
           <tr>
-            <td style="color: white;">LUCE / USDT <small>144.12K USDT</small></td>
+             <td style="color: white;">LUCE / USDT <small>144.12K USDT</small></td>
             <td class="price">0.003083</td>
             <td><span class="change red">-19.84%</span></td>
           </tr>
           <tr>
-            <td style="color: white;">CTA / USDT <small>656.64K USDT</small></td>
+               <td style="color: white;">CTA / USDT <small>656.64K USDT</small></td>
             <td class="price">0.03320</td>
             <td><span class="change red">-18.97%</span></td>
           </tr>
@@ -324,36 +325,36 @@
       }, 1700);
     });
 
-    // --- Price simulation every 8s ---
+    // --- Price simulation every 4s ---
     function simulatePriceChange() {
-      const rows = document.querySelectorAll("#cryptoData tr");
+        const rows = document.querySelectorAll("#cryptoData tr");
+        
+        rows.forEach(row => {
+            const priceCell = row.querySelector(".price");
+            const changeCell = row.querySelector(".change");
 
-      rows.forEach(row => {
-        const priceCell = row.querySelector(".price");
-        const changeCell = row.querySelector(".change");
+            let price = parseFloat(priceCell.textContent);
+            let change = parseFloat(changeCell.textContent);
 
-        let price = parseFloat(priceCell.textContent);
-        let change = parseFloat(changeCell.textContent);
+            const movement = (Math.random() - 0.6) * 0.01; 
+            price += price * movement;
+            change = movement * 100;
 
-        const movement = (Math.random() - 0.6) * 0.01;
-        price += price * movement;
-        change = movement * 100;
+            priceCell.textContent = price.toFixed(6);
+            changeCell.textContent = `${change >= 0 ? "+" : ""}${change.toFixed(2)}%`;
 
-        priceCell.textContent = price.toFixed(6);
-        changeCell.textContent = `${change >= 0 ? "+" : ""}${change.toFixed(2)}%`;
+            if (change >= 0) {
+                changeCell.classList.remove("red");
+                changeCell.classList.add("green");
+            } else {
+                changeCell.classList.remove("green");
+                changeCell.classList.add("red");
+            }
 
-        if (change >= 0) {
-          changeCell.classList.remove("red");
-          changeCell.classList.add("green");
-        } else {
-          changeCell.classList.remove("green");
-          changeCell.classList.add("red");
-        }
-
-        setTimeout(() => {
-          priceCell.style.color = "#fff";
-        }, 900);
-      });
+            setTimeout(() => {
+                priceCell.style.color = "#fff";
+            }, 900);
+        });
     }
     setInterval(simulatePriceChange, 8000);
 
@@ -382,3 +383,5 @@
   </script>
 </body>
 </html>
+
+  
