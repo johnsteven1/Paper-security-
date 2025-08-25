@@ -83,12 +83,12 @@ box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 
     .badge {
       position: absolute;
-      top: -6px;
-      right: -8px;
+      top: 6px;
+      right: 10px;
       background-color: red;
       color: white;
       font-size: 8px;
-      padding: 1px 5px;
+      padding: 1px;
       border-radius: 50%;
       font-weight: bold;
     }
@@ -233,12 +233,15 @@ box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     </div>
 
     <div class="icons">
+        <div class="icons">
       <i class="fas fa-headset"></i>
-      <div class="notification" onclick="handleNotificationClick()">
-        <i class="fas fa-bell"></i>
-        <span class="badge">46</span>
-      </div>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 22a2.5 2.5 0 0 0 2.3-1.5H9.7A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 1 0-14 0v5l-2 2v1h20v-1l-2-2Z"
+          stroke="#e2e3e7" stroke-width="1.5" stroke-linejoin="round"/>
+      </svg>
     </div>
+    <span class="badge">46</span>
   </div>
 
   <!-- Loader shown on pull -->
