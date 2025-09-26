@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Withdrawal Details</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0d0f;
+      --panel: #111214;
+      --text: #e7e9ee;
+      --muted: #a0a7b1;
+      --line: #24272d;
+      --accent: #0f9d58; /* darker green */
+      --button-bg: #16171a;
+      --button-border: #2b2f36;
+      --receipt-scale: 0.78;
+      --receipt-width: 128%;
+      --receipt-left: -51px;
+      --receipt-top: 10px;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      font-family: 'Inter', sans-serif;
+      color: var(--text);
+      width: 100%;
+      min-height: 20vh;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .receipt {
+      position: fixed;
+      transform: scale(var(--receipt-scale));
+      transform-origin: top center;
+      max-width: none;
+      background: var(--panel);
+      width: var(--receipt-width);
+      left: var(--receipt-left);
+      top: var(--receipt-top);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      padding: 17px;
+    }
+    .back {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--text);
+      margin-left: -10px;
+    }
+    .header h1 {
+      flex: 1;
+      text-align: center;
+      font-size: 17px;
+      font-weight: 500;
+      margin-left: 34px;
+    }
+
+    /* Summary */
+    .summary {
+      text-align: center;
+      padding: 22px;
+    }
+    .summary .label {
+      font-size: 14px;
+    }
+    .summary .amount {
+      font-size: 19px;
+      font-family: 'Inter', sans-serif;
+      color: rgba(250, 254, 254, 0.8);
+      font-weight: 535;
+      padding: 9px;
+      margin: 4px;
+      margin-left: 21px;
+      margin-bottom: -12px;
+    }
+    .status {
+      color: var(--accent);
+      font-size: 15px;
+      font-weight: 600;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    /* Divider */
+    .divider {
+      padding: 6px;
+      width: 104%;
+      left: -38px;
+      height: 1px;
+      background: #000000;
+      margin: 8px 0;
+    }
+
+    /* Details */
+    .details {
+      width: 95%;
+      padding: 9px;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 12px 0;
+      font-size: 14px;
+    }
+    .row:last-child {
+      border-bottom: none;
+    }
+    .label {
+      color: var(--muted);
+      min-width: 160px;
+    }
+    .value {
+      text-align: right;
+      word-break: break-word;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+    .copy-btn {
+      cursor: pointer;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: -6px;
+      margin-top: -32px;
+    }
+    .copy-btn svg {
+      width: 16px;
+      height: 18px;
+    }
+
+    /* Footer CTA */
+    .footer {
+      padding: 16px 17px;
+      height: 80px;
+      background: var(--panel);
+    }
+    .cta {
+      width: 100%;
+      height: 48px;
+      border-radius: 10px;
+      background: var(--button-bg);
+      border: 1px solid var(--button-border);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .cta:active {
+      transform: translateY(1px);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #161b22;
+      color: #d8dee9;
+      border: 1px solid #2a2f37;
+      padding: 10px 12px;
+      border-radius: 10px;
+      opacity: 0;
+      transform: translateY(8px);
+      pointer-events: none;
+      transition: .25s ease;
+      font-size: 14px;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+  <div class="receipt">
+    <!-- Header -->
+    <div class="header">
+      <a href="receive2.html" class="back">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 6L9 12L15 18"/>
+        </svg>
+      </a>
+      <h1>Withdrawal Details</h1>
+      <div style="width:28px"></div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary">
+      <div class="label">Quantity</div>
+      <div class="amount"> 51.97 TON </div>
+      <div class="status">
+        <svg width="16" height="30" viewBox="0 0 24 24" fill="none"
+             stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <defs>
+            <filter id="innerShadow" x="-50%" y="-50%" width="204%" height="200%">
+              <feOffset dx="0" dy="0" />
+              <feGaussianBlur stdDeviation="17.0" result="blur"/>
+              <feComposite in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1"/>
+              <feColorMatrix type="matrix" values="0 0 0 0 0
+                                                   0 0 0 0 0
+                                                   1 0 1 0 0
+                                                   0 0 0 0.9 0"/>
+              <feBlend in2="SourceGraphic" mode="multiply"/>
+            </filter>
+          </defs>
+          <circle cx="12" cy="12" r="10" filter="url(#innerShadow)"/>
+          <path d="M8 12.5L11 15.5L16 9.5"/>
+        </svg>
+        Withdrawal Completed
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Details -->
+    <div class="details">
+      <div class="row"><div class="label">Withdrawal Account</div><div class="value">Funding Account</div></div>
+      <div class="row"><div class="label">Fees</div><div class="value">0.002827821</div></div>
+      <div class="row"><div class="label">Chain Type</div><div class="value">TON</div></div>
+      <div class="row"><div class="label">Time</div><div class="value">2025-09-25  17:49:24</div></div>
+      <div class="row">
+        <div class="label">Withdrawal Address</div>
+        <div class="value">
+          <span id="addr">UQDBfjyvFnIzGi5jN94W2GWDGU9Z8JBA6uirv6vQMThBVl9U</span>
+          <div class="copy-btn" data-copy="#addr" title="Copy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="10" height="10" rx="2"/>
+              <path d="M7 15H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v1"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="label">Transaction Hash</div>
+        <div class="value">
+          <span id="txh">bff7b4e8b8576b9211ff3b2be387a760cf5b2f8fccf8c35e1980cdfdda7ae7b4</span>
+          <div class="copy-btn" data-copy="#txh" title="Copy">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="10" height="10" rx="2"/>
+              <path d="M7 15H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h7a2 2 0 0 1 2 2v1"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <canvas id="canvas" width="150" height="101"></canvas>
+
+    <!-- Footer -->
+    <div class="footer">
+      <button class="cta" id="explorerBtn">View in Blockchain Explorer</button>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">Copied</div>
+
+  <script>
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(window.__toastTimer);
+      window.__toastTimer = setTimeout(() => t.classList.remove('show'), 1500);
+    }
+
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const targetSel = btn.getAttribute('data-copy');
+        const text = document.querySelector(targetSel)?.textContent.trim();
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast('Copied to clipboard');
+        } catch {
+          showToast('Copy failed');
+        }
+      });
+    });
+
+    // Redirect footer button
+    document.getElementById('explorerBtn').addEventListener('click', () => {
+      window.open('https://tonviewer.com/transaction/bff7b4e8b8576b9211ff3b2be387a760cf5b2f8fccf8c35e1980cdfdda7ae7b4'); // replace with your blockchain explorer link
+    });
+  </script>
+</body>
+</html>
+    
