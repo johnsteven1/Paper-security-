@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notifications</title>
+
+<style>
+* {
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+}
+
+/* FIXED TOP SECTION */
+.top-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: #000;
+    z-index: 1000;
+}
+
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.header-icons {
+    display: flex;
+    gap: 15px;
+}
+
+/* ✅ ADDED (image styling) */
+.header-icons img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+/* ✅ ADDED (arrow image styling) */
+.header img.arrow {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+/* Tabs (UPDATED) */
+.tabs {
+    display: flex;
+    gap: 28px;
+    padding: 0 15px;
+    border-bottom: 1px solid #1a1a1a;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+.tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.tab {
+    padding: 12px 0;
+    font-size: 15px;
+    font-weight: 500;
+    color: #6f6f6f;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.tab.active {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.tab.active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #ffffff;
+    border-radius: 2px;
+}
+
+/* SCROLLABLE AREA */
+#notifications {
+    margin-top: 110px;
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+}
+
+/* Notification list */
+.notification {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.title {
+    font-size: 15px;
+    font-weight: 600;
+    color: #e6e6e6;
+}
+
+.subtitle {
+    color: #8a8a8a;
+    font-size: 12.5px;
+    margin-top: 6px;
+    line-height: 1.6;
+    word-break: break-word;
+}
+
+.meta {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    font-size: 11.5px;
+    color: #6f6f6f;
+}
+
+.badge {
+    background: #1a1a1a;
+    color: #9a9a9a;
+    padding: 4px 10px;
+    border-radius: 15px;
+    margin-left: 6px;
+}
+
+.view-more {
+    color: #cfcfcf;
+    cursor: pointer;
+}
+
+.red-dot {
+    color: red;
+    margin-right: 5px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="top-fixed">
+    <div class="header">
+        <!-- ✅ CHANGED: arrow span → image -->
+        <img src="Screenshot_20260317_124340_Bybit.jpg" alt="Back" class="arrow">
+        <span>Notification</span>
+        <div class="header-icons">
+            <!-- ✅ UPDATED ICONS -->
+            <img src="file_000000009a30720ab1aad5846745365e (2).png" alt="Gift">
+            <img src="20260317_021600.png" alt="Settings">
+        </div>
+    </div>
+
+    <div class="tabs">
+        <div class="tab active">All 35</div>
+        <div class="tab">System Notification 4</div>
+        <div class="tab">Latest Events 27</div>
+    </div>
+</div>
+
+<div id="notifications"></div>
+
+<script>
+const notifications = [
+{
+    title: "Withdrawal Successful",
+    content: `You've successfully withdrawn 0.86143190 TON from your Bybit account.
+Your withdrawal address:
+UQDCh4Xt8NNA2uKlsPB90Mq60d0f8Qv5fK_KKFeOrpPmzB3r
+TXID: b0a7bf0f1c778a2e7943f00d9daae2e3002b3545c8ce3466c61af859f078ee87`,
+    time: "01-16 03:00",
+    tag: "System Notification",
+    alert: true,
+    link: "receive2.html"
+},
+{
+    title: "Login Attempt From New IP",
+    content: `Dear Trader,
+
+The system has detected that your account is logged in from an unfamiliar IP address:
+
+Account: ste****ejohn735@gmail.com
+Device: bybit_app/5.11.0/android/pro
+Time: 2026-03-17 11:01:12
+IP Address: 102.88.111.3
+
+If this is not you, please disable your account immediately.`,
+    time: "Today 12:01",
+    tag: "Changes to Account Info",
+    link: "details.html"
+},
+{
+    title: "Login password successfully changed",
+    content: `Your account login password has been changed
+Device: bybit_app/5.11.0/android/pro
+Time: 2026-03-17 10:57:21
+IP: 102.88.111.3`,
+    time: "Today 11:57",
+    tag: "Changes to Account Info",
+    alert: true,
+    link: "details.html"
+},
+{
+    title: "Last Call: ZAMA Launchpool",
+    content: "Seize your last chance to share the 12000000 ZAMA prize pool. Join now 👉",
+    time: "02-06 11:22",
+    tag: "System Notification",
+    alert: true,
+    link: "details.html"
+},
+{
+    title: "12000000 ZAMA Up for Grabs!",
+    content: "Stake MNT & ZAMA to earn ZAMA tokens for free on Bybit Launchpool.",
+    time: "02-02 09:09",
+    tag: "Latest Events",
+    alert: true,
+    link: "details.html"
+},
+{
+    title: "🚀 Launch Alert: ZAMA Just Dropped!",
+    content: "",
+    time: "",
+    tag: "",
+    link: "details.html"
+}
+];
+
+const container = document.getElementById("notifications");
+
+notifications.forEach(n => {
+    const div = document.createElement("div");
+    div.className = "notification";
+
+    div.innerHTML = `
+        <div class="title">
+            ${n.alert ? '<span class="red-dot">•</span>' : ''}${n.title}
+        </div>
+        <div class="subtitle">${n.content.replace(/\n/g, "<br>")}</div>
+        <div class="meta">
+            <div>
+                ${n.time ? n.time : ""}
+                ${n.tag ? `<span class="badge">${n.tag}</span>` : ""}
+            </div>
+            <div class="view-more">View More →</div>
+        </div>
+    `;
+
+    div.style.cursor = "pointer";
+
+    div.addEventListener("click", () => {
+        window.location.href = n.link;
+    });
+
+    container.appendChild(div);
+});
+</script>
+
+</body>
+</html>
