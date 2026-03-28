@@ -5,27 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Asset History - Withdraw</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
-  <style>
-    body {
-      margin: 0;
-      background-color: #0f0f0f;
-      font-family: 'Segoe UI', sans-serif;
-      color: #ffffff;
-    }
+ <style>
+  body {
+    margin: 0;
+    background-color: #0f0f0f;
+    font-family: 'Segoe UI', sans-serif;
+    color: #ffffff;
+    height: 100vh;              /* ADDED */
+    overflow: hidden;           /* ADDED */
+  }
 
-    /* Pull-to-refresh loader */
-    .loader-container {
-      display: none;
-      justify-content: center;
-      align-items: center;
-      height: 56px;
-      background-color: #0f0f0f;
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
+  /* Pull-to-refresh loader */
+  .loader-container {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    height: 56px;
+    background-color: #0f0f0f;
+    position: sticky;
+    top: 100px;                 /* UPDATED */
+    z-index: 999;
+  }
 
-   .loader span {
+ .loader span {
   font-size: 16px; /* Smaller size */
   font-weight: bold;
   color: #fff;
@@ -33,110 +35,123 @@
   animation: bounce 1s infinite ease-in-out;
 }
 
-    .loader .b1 { animation-delay: 0s; }
-    .loader .y  { animation-delay: 0.2s; }
-    .loader .b2 { animation-delay: 0.2s; }
-    .loader .i  {
-      animation-delay: 0.3s;
-      color: #f5a623;
-    }
-    .loader .t  { animation-delay: 0.4s; }
+  .loader .b1 { animation-delay: 0s; }
+  .loader .y  { animation-delay: 0.2s; }
+  .loader .b2 { animation-delay: 0.2s; }
+  .loader .i  {
+    animation-delay: 0.3s;
+    color: #f5a623;
+  }
+  .loader .t  { animation-delay: 0.4s; }
 
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50%      { transform: translateY(-10px); }
-    }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
 
-    header {
-      display: flex;
-      align-items: center;
-      padding: 10px 15px;
-      background-color: #0f0f0f;
-      font-size: 16px;
-      font-weight: bold;
-    }
+  header {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: #0f0f0f;
+    font-size: 16px;
+    font-weight: bold;
+    position: sticky;   /* ADDED */
+    top: 0;             /* ADDED */
+    z-index: 1100;      /* ADDED */
+  }
 
-    .back-arrow {
-      margin-right: 10px;
-      color: #fff;
-      cursor: pointer;
-    }
+  .back-arrow {
+    margin-right: 10px;
+    color: #fff;
+    cursor: pointer;
+  }
 
-    .tabs {
-      display: flex;
-      justify-content: space-between;
-      padding: 0 10px;
-      margin-top: 10px;
-      font-size: 12px;
-      font-weight: bold;
-    }
+  .tabs {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+    margin-top: 10px;
+    font-size: 12px;
+    font-weight: bold;
+    position: sticky;   /* ADDED */
+    top: 50px;          /* ADDED */
+    background: #0f0f0f;/* ADDED */
+    z-index: 1000;      /* ADDED */
+  }
 
-    .tabs span {
-      padding: 6px 9px;
-      color: #888;
-    }
+  .tabs span {
+    padding: 6px 9px;
+    color: #888;
+  }
 
-    .tabs .active {
-      color: #fff;
-      border-bottom: 1px solid orange;
-    }
+  .tabs .active {
+    color: #fff;
+    border-bottom: 1px solid orange;
+  }
 
-    .sub-tabs {
-      padding: 0 15px;
-      margin-top: 5px;
-      font-size: 12px;
-      color: #aaa;
-    }
+  .sub-tabs {
+    padding: 0 15px;
+    margin-top: 5px;
+    font-size: 12px;
+    color: #aaa;
+    position: sticky;    /* ADDED */
+    top: 78px;           /* ADDED */
+    background: #0f0f0f; /* ADDED */
+    z-index: 1000;       /* ADDED */
+  }
 
-    .transaction-list {
-      padding: 9px 13px;
-    }
+  .transaction-list {
+    padding: 9px 13px;
+    height: calc(100vh - 130px); /* ADDED */
+    overflow-y: auto;            /* ADDED */
+  }
 
-    .transaction {
-      display: block;
-      text-decoration: none;
-      color: #fff;
-      border-bottom: 1px solid #1e1e1e;
-      padding: 10px 0;
-      transition: background-color 0.2s;
-    }
+  .transaction {
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    border-bottom: 1px solid #1e1e1e;
+    padding: 10px 0;
+    transition: background-color 0.2s;
+  }
 
-    .transaction:hover {
-      background-color: #1a1a1a;
-    }
+  .transaction:hover {
+    background-color: #1a1a1a;
+  }
 
-    .transaction .top {
-      display: flex;
-      justify-content: space-between;
-      font-weight: 500;
-      font-size: 13px;
-      color: #fff;
-    }
+  .transaction .top {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 500;
+    font-size: 13px;
+    color: #fff;
+  }
 
-    .transaction .bottom {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 5px;
-      font-size: 10px;
-      color: #aaa;
-    }
+  .transaction .bottom {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 5px;
+    font-size: 10px;
+    color: #aaa;
+  }
 
-    .status {
-  color:#aaa;  /* white text */
-  font-size: 11px;
-}
+  .status {
+    color:#aaa;
+    font-size: 11px;
+  }
 
-.status::before {
-  content: '● ';
-  color: #228B22; /* green dot */
-}
+  .status::before {
+    content: '● ';
+    color: #228B22;
+  }
 
-    .amount {
-      font-weight: ;
-      font-size: 12px;
-      color: #fff;
-    }
-  </style>
+  .amount {
+    font-weight: ;
+    font-size: 12px;
+    color: #fff;
+  }
+</style>
 </head>
 <body>
 
@@ -169,64 +184,108 @@
     </div>
   </div>
          
-<div class="transaction-list"> 
-  <a href="#" class="transaction">
+  <div class="transaction-list">  
+ <a href="#" class="transaction">
   <div class="top"><span>TON</span><span class="amount">0.8614319</span></div>
   <div class="bottom"><span>2026-03-13 18:08:27</span><span class="status">Withdrawal Completed</span></div>
 </a>
     
 
- <a href="nidex.html" class="transaction">
+ <a href="ton4m.html" class="transaction">
   <div class="top"><span>TON</span><span class="amount">457.31</span></div>
   <div class="bottom"><span>2026-03-12 18:11:35</span><span class="status">Withdrawal Completed</span></div>
- </a>
-  <a href="jgh.html" class="transaction">
-  <div class="top"><span>XRP</span><span class="amount">554.307287</span></div>
-  <div class="bottom"><span>2026-03-09 03:33:30</span><span class="status">Withdrawal Completed</span></div>
-  </a>
-
-   <a href="xrpr.html" class="transaction">
-  <div class="top"><span>XRP</span><span class="amount">115.824115</span></div>
-  <div class="bottom"><span>2026-03-06 12:24:10</span><span class="status">Withdrawal Completed</span></div>
-   </a>
-    
- <a href="crpton38.html" class="transaction">
-  <div class="top"><span>XRP</span><span class="amount">136.4</span></div>
-  <div class="bottom"><span>2026-01-15 11:38:10</span><span class="status">Withdrawal Completed</span></div>
 </a>
-    
-    
- <a href="xrp2026.html" class="transaction">
-  <div class="top"><span>XRP</span><span class="amount">378.672982</span></div>
-  <div class="bottom"><span>2026-01-05 22:12:00</span><span class="status">Withdrawal Completed</span></div>
-</a>
+        
     
  <a href="crpton36.html" class="transaction">
   <div class="top"><span>XRP</span><span class="amount">558.139535</span></div>
   <div class="bottom"><span>2025-12-04 16:16:51</span><span class="status">Withdrawal Completed</span></div>
 </a>
     
+    
+ <a href="crpton34.html" class="transaction">
+  <div class="top"><span>XRP</span><span class="amount">1,360.297451</span></div>
+  <div class="bottom"><span>2025-11-28 07:06:20</span><span class="status">Withdrawal Completed</span></div>
+</a>
 
+ <a href="Xbtoncry76.html" class="transaction">
+  <div class="top"><span>TON</span><span class="amount">578.0579</span></div>
+  <div class="bottom"><span>2025-11-11 21:33:11</span><span class="status">Withdrawal Completed</span></div>
+</a>
+    
+ <a href="toncrton101.html" class="transaction">
+  <div class="top"><span>XRP</span><span class="amount">1,111.90408</span></div>
+  <div class="bottom"><span>2025-10-15 12:38:40</span><span class="status">Withdrawal Completed</span></div>
+</a>
+    
+ <a href="toncry75.html" class="transaction">
+  <div class="top"><span>XRP</span><span class="amount">199.288256</span></div>
+  <div class="bottom"><span>2025-10-10 12:08:20</span><span class="status">Withdrawal Completed</span></div>
+</a>
+    
+ <a href="toncry78.html" class="transaction">
+  <div class="top"><span>XRP</span><span class="amount">908.181</span></div>
+  <div class="bottom"><span>2025-10-10 03:23:40</span><span class="status">Withdrawal Completed</span></div>
+</a>
+
+ <a href="toncry76.html" class="transaction">
+  <div class="top"><span>TON</span><span class="amount">9,268.399004</span></div>
+  <div class="bottom"><span>2025-10-08 04:17:40</span><span class="status">Withdrawal Completed</span></div>
+</a>
+
+
+ <a href="toncry70.html" class="transaction">
+  <div class="top"><span>XRP</span><span class="amount">317.456858</span></div>
+  <div class="bottom"><span>2025-10-08 16:36:31</span><span class="status">Withdrawal Completed</span></div>
+</a>
+    
+ <a href="jh4.html" class="transaction">
+  <div class="top"><span>XRP</span><span class="amount">191.18541</span></div>
+  <div class="bottom"><span>2025-10-07 10:07:31</span><span class="status">Withdrawal Completed</span></div>
+</a>
+    
+    
+ <a href="ton512.html" class="transaction">
+  <div class="top"><span>XRP</span><span class="amount">424.028269</span></div>
+  <div class="bottom"><span>2025-09-28 19:39:52</span><span class="status">Withdrawal Completed</span></div>
+</a>
+    
+ <a href="ton512.html" class="transaction">
+  <div class="top"><span>XRP</span><span class="amount">424.028269</span></div>
+  <div class="bottom"><span>2025-09-28 19:39:52</span><span class="status">Withdrawal Completed</span></div>
+</a>
+    
+    
  <a href="ton48.html" class="transaction">
+  <div class="top"><span>TON</span><span class="amount">51.97</span></div>
+  <div class="bottom"><span>2025-09-25 17:49:24</span><span class="status">Withdrawal Completed</span></div>
+</a>
+
+
+ <a href="ton40.html" class="transaction">
   <div class="top"><span>TON</span><span class="amount">1,737.26</span></div>
   <div class="bottom"><span>2025-09-25 01:32:12</span><span class="status">Withdrawal Completed</span></div>
 </a>
     
-    <a href="ton46.html" class="transaction">
+ <a href="ton39.html" class="transaction">
+  <div class="top"><span>TON</span><span class="amount">125.55 </span></div>
+  <div class="bottom"><span>2025-09-23 23:56:06</span><span class="status">Withdrawal Completed</span></div>
+</a>
+    
+<a href=" ton38.html" class="transaction">
   <div class="top"><span>XRP</span><span class="amount">100</span></div>
   <div class="bottom"><span>2025-09-19 00:45:10</span><span class="status">Withdrawal Completed</span></div>
-    </a>
+</a>
     
- <a href=" tox38.html" class="transaction">
+ <a href=" ton38.html" class="transaction">
   <div class="top"><span>XRP</span><span class="amount">54.100626</span></div>
   <div class="bottom"><span>2025-09-18 15:55:21</span><span class="status">Withdrawal Completed</span></div>
 </a>
     
  <a href="ton56.html" class="transaction">
-  <div class="top"><span>TON</span><span class="amount">25.95</span></div>
+  <div class="top"><span>TON</span><span class="amount">54.100626</span></div>
   <div class="bottom"><span>2025-09-18 05:48:59</span><span class="status">Withdrawal Completed</span></div>
 </a>
-    
     
 <a href="XRP20.html" class="transaction">
   <div class="top"><span>XRP</span><span class="amount">60.200668 </span></div>
