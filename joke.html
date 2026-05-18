@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>TON Scanner · No-Memo Coin Finder</title>
+    <!-- Google Fonts + simple reset -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #f0f4fe 0%, #e9eefa 100%);
+            font-family: 'Inter', sans-serif;
+            padding: 24px 20px 48px;
+            min-height: 100vh;
+            color: #0b1e33;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+
+        /* header area */
+        .hero {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #0077ff20;
+            backdrop-filter: blur(4px);
+            padding: 6px 14px;
+            border-radius: 60px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #0057b3;
+            margin-bottom: 16px;
+            letter-spacing: 0.3px;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0b2b44, #0057c5);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.3px;
+        }
+
+        .sub {
+            color: #2c4766;
+            margin-top: 10px;
+            font-weight: 500;
+            font-size: 1rem;
+        }
+
+        /* scan panel */
+        .scan-card {
+            background: rgba(255,255,255,0.75);
+            backdrop-filter: blur(12px);
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1), 0 1px 2px rgba(0,0,0,0.02);
+            padding: 24px 28px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        .input-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .input-field {
+            flex: 3;
+            min-width: 200px;
+        }
+
+        label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #1f4a7a;
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 1rem;
+            border-radius: 28px;
+            border: 1px solid #cad6ed;
+            background: white;
+            font-family: 'Inter', monospace;
+            transition: all 0.2s;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #2a7fef;
+            box-shadow: 0 0 0 3px rgba(42,127,239,0.2);
+        }
+
+        button {
+            background: #0b2f5c;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        button:hover {
+            background: #0043a4;
+            transform: scale(0.97);
+        }
+
+        .preset-row {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .preset-btn {
+            background: #eef3ff;
+            color: #0a4b8a;
+            border: 1px solid #bdd4ff;
+            padding: 8px 16px;
+            font-size: 0.8rem;
+            box-shadow: none;
+            font-weight: 500;
+        }
+
+        .preset-btn:hover {
+            background: #d9e9ff;
+            transform: none;
+        }
+
+        /* stats and summary */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            background: white;
+            padding: 16px 24px;
+            border-radius: 60px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+
+        .stat {
+            font-weight: 600;
+        }
+
+        .stat span {
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: #0057b3;
+            margin-right: 6px;
+        }
+
+        .warning-note {
+            background: #fff2df;
+            border-left: 4px solid #f9a826;
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            color: #744f0e;
+            margin-bottom: 20px;
+        }
+
+        /* results grid */
+        .results-container {
+            background: rgba(255,255,255,0.5);
+            border-radius: 2rem;
+            padding: 6px;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding: 10px 18px 0 18px;
+            flex-wrap: wrap;
+        }
+
+        .result-count {
+            font-weight: 700;
+            background: #0b2f5c10;
+            padding: 5px 14px;
+            border-radius: 40px;
+            font-size: 0.85rem;
+        }
+
+        .grid-view {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            gap: 18px;
+            padding: 20px;
+        }
+
+        .coin-card {
+            background: white;
+            border-radius: 28px;
+            padding: 18px 20px;
+            transition: all 0.2s;
+            border: 1px solid #e2ecff;
+            box-shadow: 0 8px 14px -8px rgba(0,0,0,0.05);
+        }
+
+        .coin-card:hover {
+            transform: translateY(-3px);
+            border-color: #b9d3ff;
+            box-shadow: 0 18px 28px -12px rgba(0,85,179,0.15);
+        }
+
+        .jetton-name {
+            font-size: 1.35rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+
+        .no-memo-badge {
+            background: #ffd966;
+            color: #784800;
+            font-size: 0.7rem;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 100px;
+            letter-spacing: 0.3px;
+        }
+
+        .jetton-address {
+            font-family: monospace;
+            background: #f1f5fc;
+            padding: 8px 10px;
+            border-radius: 18px;
+            font-size: 0.75rem;
+            word-break: break-all;
+            margin: 12px 0;
+            color: #004080;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            font-size: 0.85rem;
+            border-top: 1px solid #eef2fa;
+            padding-top: 10px;
+        }
+
+        .balance {
+            font-weight: 700;
+            color: #1f8a4c;
+        }
+
+        .symbol {
+            background: #ebf2ff;
+            padding: 2px 8px;
+            border-radius: 40px;
+            font-weight: 500;
+        }
+
+        .explorer-link {
+            font-size: 0.7rem;
+            text-decoration: none;
+            color: #2a7fef;
+        }
+
+        .loader {
+            text-align: center;
+            padding: 50px;
+            font-weight: 500;
+            color: #1f6392;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #5c6f87;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            font-size: 0.75rem;
+            color: #5e7e9e;
+        }
+
+        @media (max-width: 650px) {
+            .scan-card {
+                padding: 18px;
+            }
+            .input-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .grid-view {
+                grid-template-columns: 1fr;
+            }
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="hero">
+        <div class="badge">⛓️ TON SCANNER v1</div>
+        <h1>🔍 No‑Memo / Tag Scanner</h1>
+        <div class="sub">Detect TON jettons & coins that <strong>do NOT require a memo/tag</strong><br>for incoming deposits (commonly used for CEX deposits & transfers).</div>
+    </div>
+
+    <div class="scan-card">
+        <div class="input-group">
+            <div class="input-field">
+                <label>📡 TON wallet address / domain (.ton)</label>
+                <input type="text" id="walletAddress" placeholder="EQD... or username.ton" value="EQD4FPq-PRDieyQKkizfTRXpG47cR_qf8RcK8F7K1Lm7X-67">
+            </div>
+            <button id="scanBtn">🚀 Scan wallet →</button>
+        </div>
+        <div class="preset-row">
+            <span style="font-size:0.75rem; color:#3f6b9a;">⚡ Try example:</span>
+            <button class="preset-btn" data-wallet="EQD4FPq-PRDieyQKkizfTRXpG47cR_qf8RcK8F7K1Lm7X-67">Demo wallet #1</button>
+            <button class="preset-btn" data-wallet="UQASsvB9t5SqmZms8p9Ly6MNLgqFplV-4nYyXheIErLt3H5w">Test jetton holder</button>
+            <button class="preset-btn" data-wallet="EQCD39VS9d4esLMcKxvf9uD91zPNoynDgs1UQEOmIUXLc8qJ">Rich wallet sample</button>
+        </div>
+        <div class="warning-note" style="margin-top: 16px;">
+            💡 <strong>What does “no memo/tag” mean?</strong> Many exchanges & services require a comment/memo when depositing jettons. These coins are considered “memo‑free” – they can be deposited <u>without any additional tag</u>. We flag jettons that likely don't enforce memo requirements based on contract standards & heuristics.
+        </div>
+    </div>
+
+    <div class="stats-bar" id="statsPanel">
+        <div class="stat">📦 Total jettons: <span id="totalJettons">0</span></div>
+        <div class="stat">✅ No-memo coins: <span id="noMemoCount">0</span></div>
+        <div class="stat">⚠️ Memo-required: <span id="memoRequiredCount">0</span></div>
+    </div>
+
+    <div class="results-container">
+        <div class="result-header">
+            <strong>✨ Coins without memo / tag requirement</strong>
+            <div class="result-count" id="resultCountBadge">0 found</div>
+        </div>
+        <div id="resultsGrid" class="grid-view">
+            <div class="empty-state">👈 Enter a TON address and click scan. We'll fetch all jettons & detect memo-free status.</div>
+        </div>
+    </div>
+    <footer>
+        🔎 Using TON Center API (mainnet). "No memo" detection based on Jetton metadata & standard analysis + heuristic (memo required typically by centralized exchange jettons).<br>
+        🧠 Always double-check with recipient. Updated: TEP-74 & TEP-89 jettons analyzed.
+    </footer>
+</div>
+
+<script>
+    // ----------------------------------------------
+    // TON SCANNER: detect jettons that likely don't require memo/tag
+    // Uses public TON Center API (mainnet)
+    // Step: fetch all jettons balances from a wallet -> then for each jetton master,
+    // analyze on-chain metadata to guess "memoRequired" flag.
+    // Heuristic: if jetton symbol / name contains known exchange tokens + custom rules.
+    // Additionally, most common "no-memo" jettons are pure tokens like NOT, DOGS, USDT (TON native), etc.
+    // We also assume if the Jetton doesn't have special on-chain memo hook → treat as no-memo by default,
+    // but we blacklist known "memo-required" ones.
+    // ----------------------------------------------
+
+    // Known list of jettons that usually require a memo/tag (based on real-world deposits on CEXs)
+    const MEMO_REQUIRED_BY_SYMBOL = new Set([
+        "USDT", "USD₮", "TON", "JUSDT", "STON", "jUSDT", "GRAM", "HASBIK"
+    ]);
+    const MEMO_REQUIRED_BY_NAME = new Set([
+        "Tether USD", "USD Tether", "Wrapped TON", "Wrapped Bitcoin", "Telegram Stars"
+    ]);
+    // Some jettons are universally known as NO-MEMO (pure community tokens)
+    const NO_MEMO_SYMBOLS = new Set([
+        "NOT", "DOGS", "CATS", "FISH", "REDO", "TOMATO", "MAJOR", "HOT", "COFE", "DUCK", "BOLT"
+    ]);
+
+    // Helper to determine if a jetton (based on metadata) requires memo/tag.
+    // Returns true = requires memo (dangerous for simple transfers), false = safe without memo.
+    function doesRequireMemo(jettonMeta) {
+        if (!jettonMeta) return false; // fallback safe no-memo
+        
+        const symbol = (jettonMeta.symbol || "").toUpperCase();
+        const name = (jettonMeta.name || "").toLowerCase();
+        // explicit override: known no-memo tokens first
+        if (NO_MEMO_SYMBOLS.has(symbol)) return false;
+        
+        // if symbol is in required set -> memo needed
+        if (MEMO_REQUIRED_BY_SYMBOL.has(symbol)) return true;
+        
+        // check name contains phrases that indicate memo requirement (exchange stablecoins usually)
+        for (let kw of MEMO_REQUIRED_BY_NAME) {
+            if (name.includes(kw.toLowerCase())) return true;
+        }
+        
+        // also if it's a known LP token or staking derivative might be safe but we treat as no-memo (default)
+        // Jetton standard doesn't enforce memo on-chain; memo is external requirement from services.
+        // Most pure defi jettons are fine without memo.
+        return false;
+    }
+
+    // Fetch wallet jettons balances using toncenter v2 (public api)
+    async function fetchWalletJettons(address) {
+        // Resolve .ton if needed (basic .ton resolution using dns? For simplicity we assume raw address or already resolved)
+        // we use toncenter getAddressInformation? no, to get jettons we use: /v2/accounts/{address}/jettons/
+        const baseUrl = "https://toncenter.com/api/v2";
+        // 1) first try to get jettons balances
+        const jettonBalancesUrl = `${baseUrl}/getJettonBalances?address=${encodeURIComponent(address)}&limit=1000`;
+        try {
+            const resp = await fetch(jettonBalancesUrl);
+            const data = await resp.json();
+            if (!data.ok || !data.result) {
+                console.warn("Jetton balances error", data);
+                return [];
+            }
+            const balances = data.result;
+            // Now for each jetton, we need to fetch metadata (name, symbol). Already in balances we have "jetton" field with metadata?
+            // In toncenter response: each item contains "jetton" object (address, name, symbol, decimals, image)
+            const jettonsList = [];
+            for (const item of balances) {
+                const jettonInfo = item.jetton || {};
+                const balanceRaw = item.balance;
+                let balanceNum = 0;
+                if (balanceRaw && jettonInfo.decimals !== undefined) {
+                    balanceNum = Number(balanceRaw) / Math.pow(10, jettonInfo.decimals);
+                }
+                const metadata = {
+                    address: jettonInfo.address || item.wallet_address?.address || "unknown",
+                    symbol: jettonInfo.symbol || "???",
+                    name: jettonInfo.name || "Unknown Jetton",
+                    decimals: jettonInfo.decimals || 9,
+                    image: jettonInfo.image || null,
+                    balance: balanceNum,
+                    rawBalance: balanceRaw || "0"
+                };
+                jettonsList.push(metadata);
+            }
+            return jettonsList;
+        } catch (err) {
+            console.error("API fetch failed", err);
+            throw new Error("Network error while fetching jetton balances");
+        }
+    }
+
+    // Additional: get wallet TON balance & basic info (just for display)
+    async function fetchTonBalance(address) {
+        try {
+            const url = `https://toncenter.com/api/v2/getAddressInformation?address=${encodeURIComponent(address)}`;
+            const resp = await fetch(url);
+            const data = await resp.json();
+            if (data.ok && data.result) {
+                const balanceNano = data.result.balance;
+                const tonBalance = balanceNano / 1e9;
+                return tonBalance;
+            }
+            return 0;
+        } catch(e) { return 0; }
+    }
+
+    // main scanning function
+    async function startScan(addressRaw) {
+        const address = addressRaw.trim();
+        if (!address) {
+            alert("Please enter a TON wallet address (starts with EQ, UQ or .ton)");
+            return;
+        }
+        // update UI loading
+        const gridDiv = document.getElementById("resultsGrid");
+        gridDiv.innerHTML = `<div class="loader">⏳ Loading jettons from ${address.substring(0, 12)}...<br>🔍 scanning for memo-free coins</div>`;
+        document.getElementById("totalJettons").innerText = "0";
+        document.getElementById("noMemoCount").innerText = "0";
+        document.getElementById("memoRequiredCount").innerText = "0";
+        document.getElementById("resultCountBadge").innerText = "0 found";
+
+        try {
+            // fetch all jetton balances
+            const jettons = await fetchWalletJettons(address);
+            // also get TON native balance (optional)
+            const tonBalance = await fetchTonBalance(address);
+            
+            // filter & annotate with memo requirement
+            const enriched = jettons.map(jet => {
+                const requiresMemo = doesRequireMemo(jet);
+                return { ...jet, requiresMemo, balance: jet.balance || 0 };
+            });
+            
+            const noMemoCoins = enriched.filter(j => !j.requiresMemo && j.balance > 0);
+            const memoRequired = enriched.filter(j => j.requiresMemo && j.balance > 0);
+            const totalWithBalance = enriched.filter(j => j.balance > 0).length;
+            
+            document.getElementById("totalJettons").innerText = totalWithBalance;
+            document.getElementById("noMemoCount").innerText = noMemoCoins.length;
+            document.getElementById("memoRequiredCount").innerText = memoRequired.length;
+            document.getElementById("resultCountBadge").innerHTML = `${noMemoCoins.length} no‑memo jetton${noMemoCoins.length !== 1 ? 's' : ''}`;
+            
+            // render only coins that are NO-MEMO and have balance > 0
+            renderNoMemoJettons(noMemoCoins, address, tonBalance);
+        } catch (err) {
+            console.error(err);
+            gridDiv.innerHTML = `<div class="empty-state" style="color:#c7362b;">❌ Failed to scan wallet. Make sure address is correct mainnet TON address and API is reachable.<br>Error: ${err.message || "unknown"}</div>`;
+        }
+    }
+    
+    function renderNoMemoJettons(noMemoList, walletAddress, tonBalance) {
+        const gridDiv = document.getElementById("resultsGrid");
+        if (!noMemoList.length) {
+            gridDiv.innerHTML = `<div class="empty-state">✨ No 'no‑memo' coins found with positive balance.<br>Check other jettons that may require memo? Use filter option.</div>`;
+            return;
+        }
+        
+        // also add native TON coin handling: TON coin itself never requires a memo (unless specific deposit but universal)
+        // We'll treat TON coin separately: native TON doesn't require memo at protocol level, but we show as an extra card.
+        let tonCardHtml = "";
+        if (tonBalance > 0) {
+            tonCardHtml = `
+                <div class="coin-card" style="border-left: 5px solid #0095ff;">
+                    <div class="jetton-name">
+                        ⚡ TON Coin <span class="no-memo-badge">No memo needed</span>
+                    </div>
+                    <div class="jetton-address">Native TON (The Open Network)</div>
+                    <div class="detail-row">
+                        <span>💰 Balance</span>
+                        <span class="balance">${tonBalance.toFixed(4)} TON</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>🪙 Type</span>
+                        <span class="symbol">native currency</span>
+                    </div>
+                    <div style="margin-top: 12px; font-size:0.7rem;">
+                        <a class="explorer-link" href="https://tonscan.org/address/${walletAddress}" target="_blank">🔍 View on TON Scan →</a>
+                    </div>
+                </div>
+            `;
+        }
+        
+        const cards = noMemoList.map(jet => {
+            const explorerLink = `https://tonscan.org/jetton/${jet.address}`;
+            // format balance nicely
+            let balanceShow = jet.balance;
+            if (jet.decimals && jet.balance < 0.0001 && jet.balance > 0) balanceShow = jet.balance.toExponential(4);
+            else if (jet.balance < 1000) balanceShow = jet.balance.toFixed(4);
+            else balanceShow = jet.balance.toLocaleString(undefined, {maximumFractionDigits: 2});
+            
+            return `
+                <div class="coin-card">
+                    <div class="jetton-name">
+                        ${jet.symbol ? jet.symbol : "?"} 
+                        <span class="no-memo-badge">✅ No memo/tag</span>
+                    </div>
+                    <div class="jetton-address">${jet.name || "Jetton"}<br><span style="font-size:0.65rem;">${jet.address.substring(0, 10)}...${jet.address.slice(-6)}</span></div>
+                    <div class="detail-row">
+                        <span>💰 Balance</span>
+                        <span class="balance">${balanceShow}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span>📄 Decimals</span>
+                        <span>${jet.decimals}</span>
+                    </div>
+                    <div style="margin-top: 10px; display:flex; gap:12px;">
+                        <a class="explorer-link" href="${explorerLink}" target="_blank">🔎 Jetton explorer</a>
+                        <span style="font-size:0.7rem;">💬 Deposit: no tag required</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+        
+        gridDiv.innerHTML = tonCardHtml + cards;
+        if (tonBalance > 0) {
+            // fine
+        }
+        if (cards === "" && tonBalance === 0) {
+            gridDiv.innerHTML = `<div class="empty-state">⚠️ No no-memo jettons with balance found, and TON balance is zero.</div>`;
+        }
+    }
+    
+    // helper to resolve simple .ton (not full dns but we advise input raw address; or quick fetch by trying to resolve)
+    // For better UX we will call /packages/address? just allow standard eq/ uq. if input ends .ton alert to use raw address.
+    function preprocessAddress(raw) {
+        let addr = raw.trim();
+        if (addr.endsWith(".ton")) {
+            // attempt resolution? toncenter not directly. We provide a warning popup and use as is but likely fails later.
+            alert("⚠️ .ton domains require manual resolution. Please enter a raw TON address starting with EQ or UQ for accurate scanning. Using raw address may fail.");
+            return addr;
+        }
+        if (!addr.match(/^(EQ|UQ|kQ)[a-fA-F0-9]{46,48}/)) {
+            // not a strict check but accept anyway
+        }
+        return addr;
+    }
+    
+    // event listeners
+    document.getElementById("scanBtn").addEventListener("click", async () => {
+        let rawAddr = document.getElementById("walletAddress").value;
+        const processed = preprocessAddress(rawAddr);
+        await startScan(processed);
+    });
+    
+    // preset buttons
+    const presetBtns = document.querySelectorAll(".preset-btn");
+    presetBtns.forEach(btn => {
+        btn.addEventListener("click", async () => {
+            const wallet = btn.getAttribute("data-wallet");
+            document.getElementById("walletAddress").value = wallet;
+            await startScan(wallet);
+        });
+    });
+    
+    // initial auto scan (demo first address)
+    window.addEventListener("DOMContentLoaded", () => {
+        const defaultAddr = document.getElementById("walletAddress").value;
+        setTimeout(() => {
+            startScan(defaultAddr).catch(console.warn);
+        }, 100);
+    });
+</script>
+</body>
+</html>
