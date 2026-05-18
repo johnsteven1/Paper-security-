@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Asset History</title>
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#000;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  color:#fff;
+  overflow:hidden;
+}
+
+/* Remove blue tap highlight on mobile */
+a, a * {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* HEADER */
+
+.header{
+  height:68px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  font-size:15px;
+  font-weight:600;
+  background:#000;
+}
+
+.back{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:18px;
+  color:#fff;
+}
+
+/* TOP TABS */
+
+.tabs{
+  display:flex;
+  align-items:center;
+  gap:18px;
+  padding:0 14px;
+  height:42px;
+  overflow-x:auto;
+  white-space:nowrap;
+  border-bottom:1px solid #111;
+  background:#000;
+}
+
+.tabs::-webkit-scrollbar{
+  display:none;
+}
+
+.tab{
+  color:#666;
+  font-size:13px;
+  font-weight:600;
+  position:relative;
+  padding-bottom:10px;
+}
+
+.tab.active{
+  color:#fff;
+}
+
+.tab.active::after{
+  content:'';
+  position:absolute;
+  left:0;
+  bottom:0;
+  width:100%;
+  height:2px;
+  background:#fff;
+  border-radius:10px;
+}
+
+/* FILTER BAR */
+
+.filters{
+  height:40px;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  padding:0 14px;
+  color:#8d8d8d;
+  font-size:12px;
+  border-bottom:1px solid #0e0e0e;
+}
+
+.filters i{
+  font-size:10px;
+  margin-left:4px;
+}
+
+/* PULL-TO-REFRESH LOADER */
+
+.loader-container {
+  display: none;
+  justify-content: center;
+  align-items: center;
+  height:40px;
+  background-color:#000;
+  position:sticky;
+  top:110px;
+  z-index:999;
+}
+
+.loader span {
+  font-size:14px;
+  font-weight:bold;
+  color:#fff;
+  display:inline-block;
+  animation:bounce 1s infinite ease-in-out;
+}
+
+.loader .b1 { animation-delay:0s; }
+.loader .y  { animation-delay:0.2s; }
+.loader .b2 { animation-delay:0.2s; }
+.loader .i  { animation-delay:0.3s; color:#f5a623; }
+.loader .t  { animation-delay:0.4s; }
+
+@keyframes bounce {
+  0%,100%{ transform:translateY(0); }
+  50%{ transform:translateY(-10px); }
+}
+
+/* TRANSACTION LIST */
+
+.list{
+  height:calc(100vh - 150px);
+  overflow-y:auto;
+  padding-top:4px;
+}
+
+.item{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 14px;
+  text-decoration:none;
+  color:#fff;
+}
+
+.left{
+  display:flex;
+  flex-direction:column;
+}
+
+.coin{
+  font-size:16px;
+  font-weight:500;
+  margin-bottom:7px;
+}
+
+.date{
+  color:#6f6f6f;
+  font-size:11px;
+}
+
+.right{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.info{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+}
+
+.amount{
+  font-size:14px;
+  font-weight:500;
+  margin-bottom:7px;
+}
+
+.status{
+  font-size:11px;
+  color:#737373;
+  display:flex;
+  align-items:center;
+}
+
+.status::before{
+  content:'';
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#00c853;
+  display:inline-block;
+  margin-right:5px;
+}
+
+.arrow{
+  color:#555;
+  font-size:12px;
+  margin-top:-10px;
+}
+
+.list::-webkit-scrollbar{
+  width:0;
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <i class="fas fa-arrow-left back" onclick="window.history.back()"></i>
+  Asset History
+</div>
+
+<!-- TOP NAV -->
+<div class="tabs">
+  <div class="tab">All Transactions</div>
+  <div class="tab">Deposit</div>
+  <div class="tab active">Withdraw</div>
+  <div class="tab">Transfer</div>
+  <div class="tab">P2P</div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <div>All Assets <i class="fas fa-caret-down"></i></div>
+  <div>On-Chain Withdrawal <i class="fas fa-caret-down"></i></div>
+</div>
+
+<!-- PULL-TO-REFRESH LOADER -->
+<div id="pull-loader" class="loader-container">
+  <div class="loader">
+    <span class="b1">B</span>
+    <span class="y">Y</span>
+    <span class="b2">B</span>
+    <span class="i">I</span>
+    <span class="t">T</span>
+  </div>
+</div>
+
+<!-- TRANSACTION LIST -->
+<div class="list">
+
+  <a href="withdrawal-eth.html" class="item">
+    <div class="left">
+      <div class="coin">ETH</div>
+      <div class="date">2026-05-11 11:16:51</div>
+    </div>
+    <div class="right">
+      <div class="info">
+        <div class="amount">0.00220672</div>
+        <div class="status">Withdrawal Completed</div>
+      </div>
+      <i class="fas fa-chevron-right arrow"></i>
+    </div>
+  </a>
+
+  <a href="rpm.html" class="item">
+    <div class="left">
+      <div class="coin">TON</div>
+      <div class="date">2026-05-16 22:06:41</div>
+    </div>
+    <div class="right">
+      <div class="info">
+        <div class="amount">948.36</div>
+        <div class="status">Withdrawal Completed</div>
+      </div>
+      <i class="fas fa-chevron-right arrow"></i>
+    </div>
+  </a>
+
+  <a href="withdrawal-bnb.html" class="item">
+    <div class="left">
+      <div class="coin">BNB</div>
+      <div class="date">2026-05-07 18:39:21</div>
+    </div>
+    <div class="right">
+      <div class="info">
+        <div class="amount">0.05544587</div>
+        <div class="status">Withdrawal Completed</div>
+      </div>
+      <i class="fas fa-chevron-right arrow"></i>
+    </div>
+  </a>
+
+</div>
+
+<script>
+let startY = 0;
+let isPulling = false;
+
+window.addEventListener('touchstart', function(e){
+  if(window.scrollY === 0){
+    startY = e.touches[0].clientY;
+    isPulling = true;
+  }
+});
+
+window.addEventListener('touchmove', function(e){
+  const currentY = e.touches[0].clientY;
+  if(isPulling && currentY - startY > 80){
+    showLoader();
+    isPulling = false;
+  }
+});
+
+function showLoader(){
+  const loader = document.getElementById('pull-loader');
+  loader.style.display = 'flex';
+  setTimeout(()=>{ loader.style.display = 'none'; }, 2000);
+}
+</script>
+
+</body>
+</html>
